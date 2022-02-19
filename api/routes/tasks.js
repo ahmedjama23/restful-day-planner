@@ -29,4 +29,20 @@ router.get('/:taskId', (request, response, next) => {
     }
 })
 
+router.patch('/:taskId', (request, response, next) => {
+    const taskId = request.params.taskId
+
+    response.status(200).json({
+        message: 'Updated task ID (' + taskId + ')'
+    })
+})
+
+router.delete('/:taskId', (request, response, next) => {
+    const taskId = request.params.taskId
+
+    response.status(200).json({
+        message: 'Deleted task ID (' + taskId + ')'
+    })
+})
+
 module.exports = router
