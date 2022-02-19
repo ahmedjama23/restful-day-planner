@@ -8,6 +8,11 @@ router.get('/', (request, response, next) => {
 });
 
 router.post('/', (request, response, next) => {
+    const agendaItem = {
+        agendaItemId: request.body.agendaItemId,
+        agendaItemDesc: request.body.agendaItemDesc
+    }
+
     response.status(200).json({
         message: "Created agenda items using POST request"
     });
@@ -16,11 +21,12 @@ router.post('/', (request, response, next) => {
 router.get('/:agendaId', (request, response, next) => {
     const agendaItemId = request.params.agendaItemId;
 
-    if(agendaItemId === 'special') {
+    if (agendaItemId === 'special') {
         response.status(200).json({
             message: "Special ID included"
         });
     }
+    
     else {
         response.status(200).json({
             message: "Returning agenda item ID (" + agendaItemId + ") using GET request"

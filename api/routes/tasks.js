@@ -8,8 +8,14 @@ router.get('/', (request, response, next) => {
 });
 
 router.post('/', (request, response, next) => {
+    const task = {
+        name: request.body.name,
+        allocatedTime: request.body.allocatedTime
+    }
+
     response.status(201).json({
-        message: "Created tasks using POST request"
+        message: "Created tasks using POST request",
+        createdTask: task
     });
 });
 

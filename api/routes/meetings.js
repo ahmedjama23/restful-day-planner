@@ -8,8 +8,14 @@ router.get('/',(request, response, next) =>{
 });
 
 router.post('/',(request, response, next) =>{
+    const meeting = {
+        meetingId: request.body.meetingId,
+        meetingTitle: request.body.meetingTitle
+    }
+
     response.status(201).json({
-        message: "Meetings created using POST requests"
+        message: "Meetings created using POST requests",
+        createdMeeting: meeting
     });
 });
 
