@@ -15,4 +15,19 @@ app.use('/tasks',taskRoutes);
 app.use('/agendaItems',agendaItemRoutes);
 app.use('/meetings',meetingRoutes);
 
+app.use((request, response, next) => {
+    const error = new Error('File not found');
+    error.status = 404;
+    next(error);
+})
+
+app.use((error, request, response, next) => {
+    response.status(error.status || 500);
+    response.json({
+        error: {
+            message: error.message
+        }
+    })
+})
+
 module.exports = app;
