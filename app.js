@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
+
 const logger = require('morgan');
+const parser = require('body-parser')
+
 
 // Route declarations
 const taskRoutes = require('./api/routes/tasks');
@@ -8,7 +11,8 @@ const agendaItemRoutes = require('./api/routes/agendaItems');
 const meetingRoutes = require('./api/routes/meetings');
 
 app.use(logger('dev'));
-
+app.use(parser.urlencoded({extended: false}));
+app.use(parser.json())
 
 // Request routing
 app.use('/tasks',taskRoutes);
