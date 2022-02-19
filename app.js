@@ -14,6 +14,17 @@ app.use(logger('dev'));
 app.use(parser.urlencoded({extended: false}));
 app.use(parser.json());
 
+app.use((request, response, next) => {
+    response.header('Access-Control-Allow-Origin', '*');
+    response.header('Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if(request.method === 'OPTIONS') {
+        response.header('Access-Control-Allow-Methods','PUT, POST, PATCH, DELETE, GET')
+        return response.status(200).json({})
+    }
+    next();
+});
+
 // Request routing
 app.use('/tasks',taskRoutes);
 app.use('/agendaItems',agendaItemRoutes);
