@@ -7,7 +7,7 @@ const agendaItemRoutes = require('./api/routes/agendaItems')
 const meetingRoutes = require('./api/routes/meetings')
 
 app.use('/tasks',taskRoutes);
-app.use('/agendaItems',taskRoutes);
-app.use('/meetings',taskRoutes);
+app.use('/agendaItems',agendaItemRoutes);
+app.use('/meetings',meetingRoutes);
 
 module.exports = app;

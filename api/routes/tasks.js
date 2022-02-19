@@ -1,5 +1,4 @@
 const express = require('express');
-const { route } = require('../../app');
 const router = express.Router();
 
 router.get('/', (request, response, next) => {
@@ -9,7 +8,7 @@ router.get('/', (request, response, next) => {
 })
 
 router.post('/', (request, response, next) => {
-    response.status(200).json({
+    response.status(201).json({
         message: "Created tasks using POST request"
     })
 })
