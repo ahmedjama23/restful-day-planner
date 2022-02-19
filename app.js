@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const logger = require('morgan');
-const parser = require('body-parser')
+const parser = require('body-parser');
 
 
 // Route declarations
@@ -12,7 +12,7 @@ const meetingRoutes = require('./api/routes/meetings');
 
 app.use(logger('dev'));
 app.use(parser.urlencoded({extended: false}));
-app.use(parser.json())
+app.use(parser.json());
 
 // Request routing
 app.use('/tasks',taskRoutes);
@@ -23,7 +23,7 @@ app.use((request, response, next) => {
     const error = new Error('File not found');
     error.status = 404;
     next(error);
-})
+});
 
 app.use((error, request, response, next) => {
     response.status(error.status || 500);
@@ -31,7 +31,7 @@ app.use((error, request, response, next) => {
         error: {
             message: error.message
         }
-    })
-})
+    });
+});
 
 module.exports = app;
