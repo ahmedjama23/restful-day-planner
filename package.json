@@ -23,5 +23,8 @@
   "homepage": "https://github.com/ahmedjama23/restful-day-planner#readme",
   "dependencies": {
     "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
