@@ -3,13 +3,13 @@ const router = express.Router();
 
 router.get('/',(request, response, next) =>{
     response.status(200).json({
-        message: "Meeting retrieved using GET requests"
+        message: "Meetings retrieved using GET requests"
     });
 });
 
 router.post('/',(request, response, next) =>{
     response.status(201).json({
-        message: "Meeting created using POST requests"
+        message: "Meetings created using POST requests"
     });
 });
 
