@@ -149,9 +149,6 @@ router.delete('/:taskId', (request, response, next) => {
                 error: err
             })
         })
-    response.status(200).json({
-        message: 'Deleted task ID (' + taskId + ')'
-    });
 });
 
 module.exports = router
