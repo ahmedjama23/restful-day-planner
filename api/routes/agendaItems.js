@@ -1,6 +1,36 @@
+const e = require('express');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (request, file, cb) {
+        cb(null, './notes/');
+    },
+    filename: function (request, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+})
+
+const fileFilter = (request, file, cb) => {
+    if (file.mimetype === 'text/plain') {
+        // accept a file
+        cb(null, true);
+    }
+    else {
+        // reject a file
+        cb(null, false);
+    }
+}
+
+const upload = multer({
+    storage: storage, 
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+})
 
 const AgendaItem = require('../models/agendaItems');
 
@@ -38,7 +68,8 @@ router.get('/', (request, response, next) => {
         })
 });
 
-router.post('/', (request, response, next) => {
+router.post('/', upload.single('notes'), (request, response, next) => {
+    console.log(request.file);
     const agendaItem = new AgendaItem({
         _id: mongoose.Types.ObjectId(),
         itemName: request.body.itemName,

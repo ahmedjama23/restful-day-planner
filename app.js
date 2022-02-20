@@ -13,13 +13,6 @@ const agendaItemRoutes = require('./api/routes/agendaItems');
 const meetingRoutes = require('./api/routes/meetings');
 
 mongoose.connect('mongodb+srv://ajama:' + process.env.MONGO_DB_PW + '@day-planner.1bvqj.mongodb.net/' + process.env.MONGO_DB_CLUSTER + '?retryWrites=true&w=majority'
-// {
-//     "auth": {
-//       "authSource": "admin"
-//     },
-//     "user": "ajama",
-//     "pass": "hSrO0bndMJQnk5XK"
-//   }
 )
 
 app.use(logger('dev'));
