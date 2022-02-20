@@ -40,7 +40,7 @@ router.get('/', (request, response, next) => {
 
 router.post('/', (request, response, next) => {
     const agendaItem = new AgendaItem({
-        _id: new mongoose.Types.ObjectId(),
+        _id: mongoose.Types.ObjectId(),
         itemName: request.body.itemName,
         itemDescription: request.body.itemDescription
     })

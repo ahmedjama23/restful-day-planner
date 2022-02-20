@@ -40,7 +40,7 @@ router.get('/', (request, response, next) => {
 
 router.post('/', (request, response, next) => {
     const task = new Task({
-        _id: new mongoose.Types.ObjectId(),
+        _id: mongoose.Types.ObjectId(),
         name: request.body.name,
         timeAllocated: request.body.timeAllocated
     })
