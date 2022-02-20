@@ -131,7 +131,7 @@ router.delete('/:taskId', (request, response, next) => {
     Task.remove({ _id: taskId }).exec()
         .then(result => {
             response.status(200).json({
-                description: "Deleted task " + result._id,
+                description: "Deleted task (" + taskId + ")",
                 deletedTask: {
                     name: result.name,
                     timeAllocated: result.timeAllocated,
