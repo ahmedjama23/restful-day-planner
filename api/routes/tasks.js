@@ -6,10 +6,25 @@ const Task = require('../models/tasks');
 
 router.get('/', (request, response, next) => {
     Task.find()
+        .select('name timeAllocated _id')
         .exec()
         .then(docs => {
+            const res = {
+                count: docs.length,
+                products: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        timeAllocated: doc.timeAllocated,
+                        _id: doc._id,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3000/tasks/' + doc._id
+                        }
+                    }
+                })
+            }
             if (docs.length >= 0) {
-                response.status(200).json(docs);
+                response.status(200).json(res);
             }
             else {
                 response.status(200).json({
@@ -32,22 +47,39 @@ router.post('/', (request, response, next) => {
     task.save().then(result => {
         response.status(201).json({
             message: "Created tasks using POST request",
-            createdTask: task
+            createdTask: {
+                name: result.name,
+                timeAllocated: result.timeAllocated,
+                _id: result._id,
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/tasks/' + result._id
+                }
+            }
         });
     })
         .catch(error => {
-            console.error(err);
-            response.status(500).json({ error: err })
+            console.error(error);
+            response.status(500).json({ error: error })
         });
 });
 
 router.get('/:taskId', (request, response, next) => {
     const taskId = request.params.taskId;
     Task.findById(taskId)
+        .select('name timeAllocated _id')
         .exec()
         .then(doc => {
             if (doc) {
-                response.status(200).json(doc)
+                response.status(200).json({
+                    task: doc.name,
+                    timeAllocated: doc.timeAllocated,
+                    _id: doc._id,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:3000/tasks'
+                    }
+                })
             }
             else {
                 response.status(404).json({
@@ -70,15 +102,15 @@ router.patch('/:taskId', (request, response, next) => {
     }
 
     Task.updateOne({ _id: taskId }, { $set: updateOps })
-    .exec()
-    .then(result => {
-        response.status(200).json(result)
-    })
-    .catch(err => {
-        response.status(500).json({
-            error: err
+        .exec()
+        .then(result => {
+            response.status(200).json(result)
         })
-    })
+        .catch(err => {
+            response.status(500).json({
+                error: err
+            })
+        })
 });
 
 router.delete('/:taskId', (request, response, next) => {
