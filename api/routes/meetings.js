@@ -35,7 +35,7 @@ router.post('/', (request, response, next) => {
     AgendaItem.findById(request.body.agendaItem)
         .then(agendaItem => {
             if (!agendaItem) {
-                throw new Error("Agenda Item Not Found")
+                throw {message: "Agenda Item Not Found", code: 404}
             }
             const meeting = new Meeting({
                 _id: mongoose.Types.ObjectId(),
@@ -62,8 +62,8 @@ router.post('/', (request, response, next) => {
             })
         })
         .catch(err => {
-            response.status(500).json({
-                error: err
+            response.status(err.code).json({
+                error: err.message
             }) 
         })
 });
