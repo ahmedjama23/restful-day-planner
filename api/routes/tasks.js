@@ -10,6 +10,7 @@ router.get('/', (request, response, next) => {
         .exec()
         .then(docs => {
             const res = {
+                description: "Returned all tasks",
                 count: docs.length,
                 products: docs.map(doc => {
                     return {
@@ -46,7 +47,7 @@ router.post('/', (request, response, next) => {
 
     task.save().then(result => {
         response.status(201).json({
-            message: "Created tasks using POST request",
+            description: "Created tasks using POST request",
             createdTask: {
                 name: result.name,
                 timeAllocated: result.timeAllocated,
@@ -104,7 +105,18 @@ router.patch('/:taskId', (request, response, next) => {
     Task.updateOne({ _id: taskId }, { $set: updateOps })
         .exec()
         .then(result => {
-            response.status(200).json(result)
+            response.status(200).json({
+                description: "Updated task " + taskId,
+                updatedTask: {
+                    task: result.name,
+                    timeAllocated: result.timeAllocated,
+                    _id: result._id,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:3000/tasks/' + taskId
+                    }
+                }
+            })
         })
         .catch(err => {
             response.status(500).json({
@@ -118,7 +130,18 @@ router.delete('/:taskId', (request, response, next) => {
 
     Task.remove({ _id: taskId }).exec()
         .then(result => {
-            response.status(200).json(result)
+            response.status(200).json({
+                description: "Deleted task " + result._id,
+                deletedTask: {
+                    name: result.name,
+                    timeAllocated: result.timeAllocated,
+                    _id: result._id
+                },
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/tasks/' + result._id
+                }
+            })
         })
         .catch(err => {
             console.log(err);
