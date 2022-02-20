@@ -8,6 +8,7 @@ const AgendaItem = require('../models/agendaItems');
 router.get('/', (request, response, next) => {
     Meeting.find()
         .select('-__v')
+        .populate('agendaItem', 'itemName')
         .exec()
         .then(docs => {
             response.status(200).json({
@@ -35,7 +36,7 @@ router.post('/', (request, response, next) => {
     AgendaItem.findById(request.body.agendaItem)
         .then(agendaItem => {
             if (!agendaItem) {
-                throw {message: "Agenda Item Not Found", code: 404}
+                throw { message: "Agenda Item Not Found", code: 404 }
             }
             const meeting = new Meeting({
                 _id: mongoose.Types.ObjectId(),
@@ -64,15 +65,16 @@ router.post('/', (request, response, next) => {
         .catch(err => {
             response.status(err.code).json({
                 error: err.message
-            }) 
+            })
         })
 });
 
 router.get('/:meetingId', (request, response, next) => {
     Meeting.findById(request.params.meetingId)
+        .populate('agendaItem','-__v')
         .exec()
         .then(meeting => {
-            if(!meeting) {
+            if (!meeting) {
                 return response.status(404).json({
                     message: "Meeting not found"
                 })
