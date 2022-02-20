@@ -1,17 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+const Task = require('../models/tasks');
 
 router.get('/', (request, response, next) => {
     response.status(200).json({
-        message: "Retreived tasks using GET request"
+        message: "Retrieved tasks using GET request"
     });
 });
 
 router.post('/', (request, response, next) => {
-    const task = {
+    const task = new Task({
+        _id: new mongoose.Types.ObjectId(),
         name: request.body.name,
-        allocatedTime: request.body.allocatedTime
-    }
+        timeAllocated: request.body.timeAllocated
+    })
+
+    task.save().then(result => {
+        console.log(result)
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
     response.status(201).json({
         message: "Created tasks using POST request",

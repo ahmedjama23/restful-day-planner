@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.get('/', (request, response, next) => {
     response.status(200).json({
-        message: "Retreived agenda items using GET request"
+        message: "Retrieved agenda items using GET request"
     });
 });
 
@@ -26,7 +26,7 @@ router.get('/:agendaId', (request, response, next) => {
             message: "Special ID included"
         });
     }
-    
+
     else {
         response.status(200).json({
             message: "Returning agenda item ID (" + agendaItemId + ") using GET request"
