@@ -11,6 +11,7 @@ const mongoose = require('mongoose')
 const taskRoutes = require('./api/routes/tasks');
 const agendaItemRoutes = require('./api/routes/agendaItems');
 const meetingRoutes = require('./api/routes/meetings');
+const userRoutes = require('./api/routes/users');
 
 mongoose.connect('mongodb+srv://ajama:' + process.env.MONGO_DB_PW + '@day-planner.1bvqj.mongodb.net/' + process.env.MONGO_DB_CLUSTER + '?retryWrites=true&w=majority'
 )
@@ -35,6 +36,7 @@ app.use((request, response, next) => {
 app.use('/tasks',taskRoutes);
 app.use('/agendaItems',agendaItemRoutes);
 app.use('/meetings',meetingRoutes);
+app.use('/user', userRoutes)
 
 app.use((request, response, next) => {
     const error = new Error('File not found');
