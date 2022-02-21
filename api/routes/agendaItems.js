@@ -33,7 +33,7 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-router.get('/', AgendaItemController.getAllAgendaItems);
+router.get('/', checkAuth, AgendaItemController.getAllAgendaItems);
 
 router.post('/', upload.single('notes'), checkAuth, AgendaItemController.createAgendaItem);
 
