@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../auth/check-auth')
 
 const Task = require('../models/tasks');
 
@@ -38,7 +39,7 @@ router.get('/', (request, response, next) => {
         })
 });
 
-router.post('/', (request, response, next) => {
+router.post('/', checkAuth, (request, response, next) => {
     const task = new Task({
         _id: mongoose.Types.ObjectId(),
         name: request.body.name,
@@ -94,7 +95,7 @@ router.get('/:taskId', (request, response, next) => {
         })
 });
 
-router.patch('/:taskId', (request, response, next) => {
+router.patch('/:taskId', checkAuth,(request, response, next) => {
     const taskId = request.params.taskId
     const updateOps = {};
 
@@ -125,7 +126,7 @@ router.patch('/:taskId', (request, response, next) => {
         })
 });
 
-router.delete('/:taskId', (request, response, next) => {
+router.delete('/:taskId', checkAuth,(request, response, next) => {
     const taskId = request.params.taskId
 
     Task.remove({ _id: taskId }).exec()

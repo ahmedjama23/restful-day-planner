@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../auth/check-auth')
 
 const storage = multer.diskStorage({
     destination: function (request, file, cb) {
@@ -69,7 +70,7 @@ router.get('/', (request, response, next) => {
         })
 });
 
-router.post('/', upload.single('notes'), (request, response, next) => {
+router.post('/', upload.single('notes'), checkAuth, (request, response, next) => {
     console.log(request.file);
     const agendaItem = new AgendaItem({
         _id: mongoose.Types.ObjectId(),
@@ -99,7 +100,7 @@ router.post('/', upload.single('notes'), (request, response, next) => {
         });
 });
 
-router.get('/:agendaId', (request, response, next) => {
+router.get('/:agendaId', checkAuth, (request, response, next) => {
     const agendaId = request.params.agendaId;
 
     AgendaItem.findById(agendaId)
@@ -130,7 +131,7 @@ router.get('/:agendaId', (request, response, next) => {
         })
 });
 
-router.patch('/:agendaId', (request, response, next) => {
+router.patch('/:agendaId', checkAuth, (request, response, next) => {
     const agendaId = request.params.agendaId
     const updateOps = {};
 
@@ -161,7 +162,7 @@ router.patch('/:agendaId', (request, response, next) => {
         })
 });
 
-router.delete('/:agendaId', (request, response, next) => {
+router.delete('/:agendaId', checkAuth, (request, response, next) => {
     const agendaId = request.params.agendaId
 
     AgendaItem.remove({ _id: agendaId }).exec()

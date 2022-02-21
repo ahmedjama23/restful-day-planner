@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../auth/check-auth')
 
 const Meeting = require('../models/meetings');
 const AgendaItem = require('../models/agendaItems');
 
-router.get('/', (request, response, next) => {
+router.get('/', checkAuth, (request, response, next) => {
     Meeting.find()
         .select('-__v')
         .populate('agendaItem', 'itemName')
@@ -32,7 +33,7 @@ router.get('/', (request, response, next) => {
         });
 });
 
-router.post('/', (request, response, next) => {
+router.post('/', checkAuth, (request, response, next) => {
     AgendaItem.findById(request.body.agendaItem)
         .then(agendaItem => {
             if (!agendaItem) {
@@ -69,7 +70,7 @@ router.post('/', (request, response, next) => {
         })
 });
 
-router.get('/:meetingId', (request, response, next) => {
+router.get('/:meetingId', checkAuth, (request, response, next) => {
     Meeting.findById(request.params.meetingId)
         .populate('agendaItem','-__v')
         .exec()
@@ -94,7 +95,7 @@ router.get('/:meetingId', (request, response, next) => {
         })
 });
 
-router.delete('/:meetingId', (request, response, next) => {
+router.delete('/:meetingId', checkAuth, (request, response, next) => {
     const meetingId = request.params.meetingId
 
     Meeting.remove({ _id: meetingId })
