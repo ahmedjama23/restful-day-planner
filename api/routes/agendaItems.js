@@ -36,7 +36,7 @@ const AgendaItem = require('../models/agendaItems');
 
 router.get('/', (request, response, next) => {
     AgendaItem.find()
-        .select('itemName itemDescription _id')
+        .select('itemName itemDescription notes _id')
         .exec()
         .then(docs => {
             const res = {
@@ -46,6 +46,7 @@ router.get('/', (request, response, next) => {
                     return {
                         itemName: doc.itemName,
                         itemDescription: doc.itemDescription,
+                        notes: doc.notes,
                         _id: doc._id,
                         request: {
                             type: 'GET',
@@ -73,7 +74,8 @@ router.post('/', upload.single('notes'), (request, response, next) => {
     const agendaItem = new AgendaItem({
         _id: mongoose.Types.ObjectId(),
         itemName: request.body.itemName,
-        itemDescription: request.body.itemDescription
+        itemDescription: request.body.itemDescription,
+        notes: request.file.path
     })
 
     agendaItem.save().then(result => {
@@ -82,6 +84,7 @@ router.post('/', upload.single('notes'), (request, response, next) => {
             createdTask: {
                 itemName: result.itemName,
                 itemDescription: result.itemDescription,
+                notes: result.notes,
                 _id: result._id,
                 request: {
                     type: 'GET',
@@ -100,13 +103,14 @@ router.get('/:agendaId', (request, response, next) => {
     const agendaId = request.params.agendaId;
 
     AgendaItem.findById(agendaId)
-        .select('itemName itemDescription _id')
+        .select('itemName itemDescription notes _id')
         .exec()
         .then(doc => {
             if (doc) {
                 response.status(200).json({
                     itemName: doc.itemName,
                     itemDescription: doc.itemDescription,
+                    notes: doc.notes,
                     _id: doc._id,
                     request: {
                         type: 'GET',

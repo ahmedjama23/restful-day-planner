@@ -16,6 +16,7 @@ mongoose.connect('mongodb+srv://ajama:' + process.env.MONGO_DB_PW + '@day-planne
 )
 
 app.use(logger('dev'));
+app.use('/notes', express.static('notes'))
 app.use(parser.urlencoded({extended: false}));
 app.use(parser.json());
 
